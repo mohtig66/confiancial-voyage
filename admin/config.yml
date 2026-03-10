@@ -1,0 +1,45 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "image"
+public_folder: "image"
+
+collections:
+  - name: "summer_camps"
+    label: "Summer Camps"
+    folder: "camps"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Camp Name", name: "title", widget: "string" }
+      - { label: "Dates", name: "dates", widget: "string", hint: "e.g. July 1 – July 15, 2025" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Flyer / Image", name: "image", widget: "image", required: false }
+      - { label: "Price", name: "price", widget: "string", required: false }
+      - { label: "Age Group", name: "age_group", widget: "string", required: false, hint: "e.g. 8–14 years old" }
+
+  - name: "announcements"
+    label: "Announcements"
+    folder: "announcements"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Message", name: "body", widget: "text" }
+      - { label: "Image or Flyer", name: "image", widget: "image", required: false }
+
+  - name: "contact"
+    label: "Contact Information"
+    files:
+      - label: "Contact Details"
+        name: "contact"
+        file: "data/contact.json"
+        fields:
+          - { label: "Email", name: "email", widget: "string" }
+          - { label: "Phone (Office)", name: "phone", widget: "string" }
+          - { label: "Fax", name: "fax", widget: "string" }
+          - { label: "Address", name: "address", widget: "text" }
+          - { label: "Opening Hours (Weekdays)", name: "hours_weekdays", widget: "string" }
+          - { label: "Opening Hours (Sunday)", name: "hours_sunday", widget: "string" }
