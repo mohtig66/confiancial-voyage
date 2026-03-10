@@ -156,6 +156,10 @@
   </style>
 </header>
 
+<!-- EmailJS -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>emailjs.init("aA3Q8GBLCT9Ig_wPt");</script>
+
 <!-- FORMULAIRE -->
 <section class="max-w-4xl mx-auto px-6 py-16 relative z-10">
   <h1 class="text-3xl font-bold text-cvnavy mb-6 text-center">Travaillez Avec Nous</h1>
@@ -163,38 +167,44 @@
     Vous souhaitez rejoindre notre équipe ou collaborer avec nous ? Remplissez le formulaire ci-dessous et nous vous contacterons rapidement !
   </p>
 
-  <form action="https://formspree.io/f/mblzvlaa" method="POST" class="flex flex-col gap-4 bg-white p-6 rounded-lg shadow-md">
-    <input type="text" name="name" placeholder="Votre nom ou nom de l'entreprise" required
+  <div class="flex flex-col gap-4 bg-white p-6 rounded-lg shadow-md">
+    <input type="text" id="work-name-fr" placeholder="Votre nom ou nom de l'entreprise" required
       class="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-cvgold">
-    <input type="email" name="email" placeholder="Votre adresse e-mail" required
+    <input type="email" id="work-email-fr" placeholder="Votre adresse e-mail" required
       class="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-cvgold">
-    <input type="tel" name="phone" placeholder="Votre numéro de téléphone (facultatif)"
+    <input type="tel" id="work-phone-fr" placeholder="Votre numéro de téléphone (facultatif)"
       class="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-cvgold">
-    <textarea name="message" placeholder="Présentez votre entreprise et comment vous souhaitez collaborer avec nous" required rows="5"
+    <textarea id="work-message-fr" placeholder="Présentez votre entreprise et comment vous souhaitez collaborer avec nous" required rows="5"
       class="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-cvgold"></textarea>
-    <button type="submit"
+    <button onclick="sendWorkEmailFr()"
       class="bg-cvgold text-cvnavy font-semibold py-2 rounded hover:scale-105 transition">
       Envoyer le message
     </button>
-  </form>
+  </div>
 
   <script>
-    const form = document.querySelector("form");
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const data = new FormData(form);
-      const response = await fetch(form.action, {
-        method: form.method,
-        body: data,
-        headers: { 'Accept': 'application/json' }
-      });
-      if (response.ok) {
+    function sendWorkEmailFr() {
+      const name = document.getElementById("work-name-fr").value.trim();
+      const email = document.getElementById("work-email-fr").value.trim();
+      const phone = document.getElementById("work-phone-fr").value.trim();
+      const message = document.getElementById("work-message-fr").value.trim();
+      if (!name || !email || !message) { alert("Veuillez remplir tous les champs obligatoires."); return; }
+      emailjs.send("confiancialvoyage", "confiancialvoyageemail", {
+        name: name,
+        phone: phone || "Non fourni",
+        message: "Email: " + email + "\n\n" + message,
+        date: new Date().toLocaleString("fr-FR", { dateStyle: "medium", timeStyle: "short" })
+      }).then(() => {
         alert("✅ Merci pour votre message ! Nous vous répondrons bientôt.");
-        form.reset();
-      } else {
+        document.getElementById("work-name-fr").value = "";
+        document.getElementById("work-email-fr").value = "";
+        document.getElementById("work-phone-fr").value = "";
+        document.getElementById("work-message-fr").value = "";
+      }).catch((err) => {
         alert("❌ Une erreur est survenue. Veuillez réessayer.");
-      }
-    });
+        console.error("EmailJS error:", err);
+      });
+    }
   </script>
 </section>
 

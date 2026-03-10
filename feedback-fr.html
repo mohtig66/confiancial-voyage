@@ -173,12 +173,15 @@
   <div id="feedbackList" class="mt-8 space-y-3"></div>
 </section>
 
+<!-- EmailJS -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>emailjs.init("aA3Q8GBLCT9Ig_wPt");</script>
+
 <!-- ✅ Script Firebase -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
   import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-database.js";
 
-  // 🔧 Votre configuration Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyBSEtByI85Igp0YWmOU095Ftc1GNHXWNZw",
     authDomain: "confiancialvoyage.firebaseapp.com",
@@ -210,8 +213,23 @@
     });
 
     if (name && message) {
+      // Enregistrer dans Firebase
       push(feedbackRef, { name, message, phone, date });
+
+      // Envoyer un email via EmailJS
+      emailjs.send("confiancialvoyage", "confiancialvoyageemail", {
+        name: name,
+        phone: phone || "Non fourni",
+        message: message,
+        date: date
+      }).then(() => {
+        console.log("Email envoyé !");
+      }).catch((err) => {
+        console.error("Erreur EmailJS :", err);
+      });
+
       feedbackForm.reset();
+      alert("✅ Merci ! Votre avis a bien été envoyé.");
     }
   });
 

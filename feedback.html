@@ -173,6 +173,10 @@
   <div id="feedbackList" class="mt-8 space-y-3"></div>
 </section>
 
+<!-- EmailJS -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>emailjs.init("aA3Q8GBLCT9Ig_wPt");</script>
+
 <!-- ✅ Firebase Script -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
@@ -209,8 +213,23 @@
     });
 
     if (name && message) {
+      // Save to Firebase
       push(feedbackRef, { name, message, phone, date });
+
+      // Send email via EmailJS
+      emailjs.send("confiancialvoyage", "confiancialvoyageemail", {
+        name: name,
+        phone: phone || "Not provided",
+        message: message,
+        date: date
+      }).then(() => {
+        console.log("Email sent!");
+      }).catch((err) => {
+        console.error("EmailJS error:", err);
+      });
+
       feedbackForm.reset();
+      alert("✅ Thank you! Your feedback has been submitted.");
     }
   });
 
