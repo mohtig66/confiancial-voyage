@@ -2,6 +2,9 @@ backend:
   name: git-gateway
   branch: main
 
+site_url: https://confiancialvoyage.com
+display_url: https://confiancialvoyage.com
+
 media_folder: "image"
 public_folder: "image"
 
